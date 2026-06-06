@@ -6,6 +6,8 @@ export function selectActiveMenu(menus) {
 
   const now        = new Date();
   const todayStr   = toDateStr(now);
+  console.log('todayStr:', todayStr, 'menus:', menus.map(m => m.validFrom));
+
   const todayDay   = now.getDay(); // 0=dom, 1=lun, ...6=sab
   const currentH   = now.getHours() + now.getMinutes() / 60;
   const timeSlot   = currentH >= 12 && currentH < 16 ? 'lunch'

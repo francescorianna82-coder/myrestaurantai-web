@@ -8,9 +8,10 @@ import { mockRestaurant, mockMenus, mockDishes } from './mock.js';
 
 const USE_MOCK = true; // false quando Firestore ha dati reali
 
-const params0 = new URLSearchParams(window.location.search);
-const forceLang0 = params0.get('lang');
-const lang = forceLang0 === 'en' || forceLang0 === 'it' ? forceLang0 : getLang();
+const _p = new URLSearchParams(window.location.search);
+const _fl = _p.get('lang');
+const lang = _fl === 'en' || _fl === 'it' ? _fl : getLang();
+
 
 
 async function loadData(slug) {
@@ -151,6 +152,8 @@ window.switchLang = function(l) {
 async function init() {
   const params = new URLSearchParams(window.location.search);
   const slug   = params.get('slug') || 'freddys';
+  const lang   = _fl === 'en' || _fl === 'it' ? _fl : getLang();
+
   const params = new URLSearchParams(window.location.search);
   const slug   = params.get('slug') || 'freddys';
   const forceLang = params.get('lang');

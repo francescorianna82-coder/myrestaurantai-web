@@ -1,0 +1,327 @@
+/* menus/style.css — MyRestaurantAI */
+
+:root {
+  --brand:  #1a2744;
+  --accent: #c9a96e;
+  --text:   #f5f0e8;
+  --card:   rgba(255,255,255,0.05);
+  --border: rgba(255,255,255,0.10);
+  --radius: 14px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.18);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background:  var(--brand);
+  color:       var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  min-height:  100vh;
+  line-height: 1.6;
+}
+
+/* LOADING */
+.loading-screen {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  height:          100vh;
+  font-size:       1.1rem;
+  color:           var(--accent);
+  letter-spacing:  0.05em;
+}
+
+/* HEADER */
+.header {
+  background:      linear-gradient(160deg, rgba(255,255,255,0.07) 0%, transparent 100%);
+  border-bottom:   1px solid var(--border);
+  padding:         28px 20px 24px;
+  text-align:      center;
+}
+
+.header-top {
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  position:        relative;
+  margin-bottom:   16px;
+}
+
+.logo { height: 56px; object-fit: contain; }
+
+.logo-text {
+  font-size:      2rem;
+  font-weight:    800;
+  color:          var(--accent);
+  letter-spacing: -0.02em;
+}
+
+.lang-switcher {
+  position: absolute;
+  right:    0;
+  display:  flex;
+  gap:      6px;
+}
+
+.lang-switcher button {
+  background:    transparent;
+  border:        1px solid var(--border);
+  color:         var(--text);
+  border-radius: 6px;
+  padding:       4px 10px;
+  font-size:     0.75rem;
+  cursor:        pointer;
+  opacity:       0.5;
+  transition:    all 0.2s;
+}
+
+.lang-switcher button.active {
+  border-color: var(--accent);
+  color:        var(--accent);
+  opacity:      1;
+}
+
+.tagline {
+  font-size:      1.05rem;
+  font-weight:    600;
+  color:          var(--accent);
+  margin-bottom:  8px;
+  letter-spacing: 0.02em;
+}
+
+.description {
+  font-size:   0.9rem;
+  opacity:     0.75;
+  max-width:   540px;
+  margin:      0 auto 10px;
+}
+
+.cuisine {
+  font-size:      0.78rem;
+  opacity:        0.45;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom:  8px;
+}
+
+.hours {
+  font-size:   0.82rem;
+  opacity:     0.65;
+  margin-top:  6px;
+}
+
+.hours-label {
+  font-weight: 600;
+  color:       var(--accent);
+}
+
+/* CONTAINER */
+.container {
+  max-width:  680px;
+  margin:     0 auto;
+  padding:    0 16px 40px;
+}
+
+/* ACTIONS */
+.actions {
+  display:         flex;
+  gap:             10px;
+  justify-content: center;
+  flex-wrap:       wrap;
+  padding:         20px 0 8px;
+}
+
+.btn {
+  display:         inline-flex;
+  align-items:     center;
+  gap:             6px;
+  padding:         10px 20px;
+  border-radius:   50px;
+  font-size:       0.88rem;
+  font-weight:     600;
+  text-decoration: none;
+  transition:      all 0.2s;
+  border:          1px solid transparent;
+}
+
+.btn-primary  { background: var(--accent); color: var(--brand); }
+.btn-whatsapp { background: rgba(37,211,102,0.15); border-color: rgba(37,211,102,0.35); color: #25d366; }
+.btn-maps     { background: rgba(255,255,255,0.07); border-color: var(--border); color: var(--text); }
+
+.btn:hover { opacity: 0.85; transform: translateY(-1px); }
+
+/* ADDRESS */
+.address { text-align: center; padding: 4px 0 8px; }
+.address-text { font-size: 0.82rem; opacity: 0.5; }
+
+/* SOCIAL */
+.social {
+  display:         flex;
+  gap:             12px;
+  justify-content: center;
+  padding:         6px 0 16px;
+}
+
+.social-link {
+  font-size:      0.8rem;
+  color:          var(--accent);
+  text-decoration: none;
+  opacity:        0.7;
+  border-bottom:  1px solid transparent;
+  transition:     all 0.2s;
+}
+
+.social-link:hover { opacity: 1; border-color: var(--accent); }
+
+/* MENU */
+.menu { padding-top: 8px; }
+
+.no-menu {
+  text-align:  center;
+  padding:     48px 0;
+  opacity:     0.5;
+  font-style:  italic;
+  font-size:   0.95rem;
+}
+
+/* CATEGORY */
+.category { margin-bottom: 32px; }
+
+.category-title {
+  font-size:      1.1rem;
+  font-weight:    700;
+  color:          var(--accent);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding:        10px 0 12px;
+  border-bottom:  1px solid var(--border);
+  margin-bottom:  12px;
+}
+
+/* DISHES */
+.dishes { display: flex; flex-direction: column; gap: 10px; }
+
+.dish {
+  background:    var(--card);
+  border:        1px solid var(--border);
+  border-radius: var(--radius);
+  padding:       14px 16px;
+  display:       flex;
+  gap:           12px;
+  transition:    background 0.2s;
+}
+
+.dish:hover { background: rgba(255,255,255,0.08); }
+
+.dish-unavailable { opacity: 0.45; }
+
+.dish-image {
+  width:         80px;
+  height:        80px;
+  object-fit:    cover;
+  border-radius: 10px;
+  flex-shrink:   0;
+}
+
+.dish-body { flex: 1; min-width: 0; }
+
+.dish-top {
+  display:         flex;
+  justify-content: space-between;
+  align-items:     flex-start;
+  gap:             8px;
+  margin-bottom:   4px;
+}
+
+.dish-name {
+  font-size:   0.95rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.dish-price {
+  font-size:   0.92rem;
+  font-weight: 700;
+  color:       var(--accent);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.dish-desc {
+  font-size:   0.82rem;
+  opacity:     0.65;
+  margin:      4px 0 8px;
+  line-height: 1.5;
+}
+
+.dish-meta {
+  display:   flex;
+  flex-wrap: wrap;
+  gap:       5px;
+  margin-top: 6px;
+}
+
+/* BADGES */
+.badge {
+  font-size:     0.68rem;
+  font-weight:   700;
+  padding:       2px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.badge-new          { background: rgba(0,180,216,0.15); color: #00B4D8; border: 1px solid rgba(0,180,216,0.30); }
+.badge-recommended  { background: rgba(201,169,110,0.15); color: var(--accent); border: 1px solid rgba(201,169,110,0.30); }
+.badge-lastPortions { background: rgba(255,71,87,0.15); color: #FF4757; border: 1px solid rgba(255,71,87,0.30); }
+.badge-soldOut      { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.40); border: 1px solid rgba(255,255,255,0.15); }
+.badge-dailySpecial { background: rgba(255,211,42,0.15); color: #FFD32A; border: 1px solid rgba(255,211,42,0.30); }
+.badge-homemade     { background: rgba(0,200,150,0.12); color: #00C896; border: 1px solid rgba(0,200,150,0.25); }
+.badge-vegetarian   { background: rgba(0,200,100,0.12); color: #00C864; border: 1px solid rgba(0,200,100,0.25); }
+.badge-glutenFree   { background: rgba(168,85,247,0.12); color: #A855F7; border: 1px solid rgba(168,85,247,0.25); }
+.badge-spicy        { background: rgba(255,100,0,0.12); color: #FF6400; border: 1px solid rgba(255,100,0,0.25); }
+
+/* ALLERGENI */
+.allergen {
+  font-size:     0.65rem;
+  font-weight:   700;
+  padding:       2px 6px;
+  border-radius: 4px;
+  background:    rgba(255,255,255,0.06);
+  border:        1px solid rgba(255,255,255,0.12);
+  color:         rgba(255,255,255,0.50);
+  cursor:        default;
+}
+
+/* ALLERGEN WARNING */
+.allergen-warning {
+  font-size:   0.78rem;
+  opacity:     0.45;
+  text-align:  center;
+  font-style:  italic;
+  padding:     16px 0 8px;
+  border-top:  1px solid var(--border);
+  margin-top:  16px;
+}
+
+/* FOOTER */
+.footer {
+  text-align:    center;
+  padding:       20px;
+  border-top:    1px solid var(--border);
+  margin-top:    8px;
+}
+
+.powered-by {
+  font-size:      0.75rem;
+  opacity:        0.35;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* RESPONSIVE */
+@media (max-width: 400px) {
+  .dish-image { width: 64px; height: 64px; }
+  .dish-name  { font-size: 0.88rem; }
+  .btn        { padding: 9px 16px; font-size: 0.82rem; }
+}

@@ -52,11 +52,21 @@ function renderHeader(r) {
         : `<div class="logo-text">${r.name}</div>`}
     </div>
     <div class="lang-switcher">
-      ${LANGUAGES.map(l => `
-        <button onclick="switchLang('${l.code}')" class="${lang === l.code ? 'active' : ''}" title="${l.name}">
-          ${l.label}
-        </button>`).join('')}
+      <div class="lang-select-wrap">
+        <button class="lang-current" onclick="toggleLangMenu()">
+          ${LANGUAGES.find(l => l.code === lang)?.flag || '🌐'}
+          <span>${LANGUAGES.find(l => l.code === lang)?.label || lang.toUpperCase()}</span>
+          <span class="lang-arrow">&#9660;</span>
+        </button>
+        <div class="lang-dropdown" id="lang-dropdown">
+          ${LANGUAGES.map(l => `
+            <button onclick="switchLang('${l.code}')" class="${lang === l.code ? 'active' : ''}">
+              ${l.flag} ${l.label}
+            </button>`).join('')}
+        </div>
+      </div>
     </div>
+
     <p class="tagline">${tag}</p>
     <p class="description">${desc}</p>
     <p class="cuisine">${cuis}</p>
@@ -171,6 +181,19 @@ window.switchLang = function(l) {
   url.searchParams.set('lang', l);
   window.location.href = url.toString();
 };
+
+window.toggleLangMenu = function() {
+  const dd = document.getElementById('lang-dropdown');
+  dd.classList.toggle('open');
+};
+
+document.addEventListener('click', function(e) {
+  const wrap = document.querySelector('.lang-select-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('lang-dropdown')?.classList.remove('open');
+  }
+});
+
 
 // ─── INIT ───────────────────────────────────────────────────────────────────
 

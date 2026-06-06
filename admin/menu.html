@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyRestaurantAI — Menu</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-page">
+
+  <nav class="topbar">
+    <div class="topbar-logo"><a href="dashboard.html">MyRestaurantAI</a></div>
+    <div class="topbar-actions">
+      <a href="dashboard.html" class="btn-nav">Dashboard</a>
+      <a href="dishes.html" class="btn-nav">Piatti</a>
+      <button id="btn-logout" class="btn-nav btn-logout">Esci</button>
+    </div>
+  </nav>
+
+  <main class="admin-main">
+
+    <div class="page-header">
+      <h1>Gestione menu</h1>
+    </div>
+
+    <!-- FORM CREAZIONE/MODIFICA MENU -->
+    <section class="admin-card">
+      <h2 id="menu-form-title">Crea menu</h2>
+      <form id="menu-form">
+
+        <div class="field-row">
+          <div class="field">
+            <label>Titolo menu *</label>
+            <input type="text" id="menu-title" placeholder="Es. Menu del giorno" required>
+          </div>
+          <div class="field field-sm">
+            <label>Priorità</label>
+            <input type="number" id="menu-priority" value="10" min="1" max="100">
+          </div>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Frequenza *</label>
+            <select id="menu-frequency">
+              <option value="daily">Giornaliero</option>
+              <option value="weekly">Settimanale</option>
+              <option value="monthly">Mensile</option>
+              <option value="custom">Custom</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Fascia oraria</label>
+            <select id="menu-timeslot">
+              <option value="allDay">Tutto il giorno</option>
+              <option value="lunch">Pranzo</option>
+              <option value="dinner">Cena</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Stato</label>
+            <select id="menu-status">
+              <option value="published">Pubblicato</option>
+              <option value="draft">Bozza</option>
+              <option value="scheduled">Pianificato</option>
+              <option value="archived">Archiviato</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="wrap-dates" style="display:none">
+          <div class="field-row">
+            <div class="field">
+              <label>Data inizio</label>
+              <input type="date" id="menu-from">
+            </div>
+            <div class="field">
+              <label>Data fine</label>
+              <input type="date" id="menu-to">
+            </div>
+          </div>
+        </div>
+
+        <div id="wrap-days" style="display:none">
+          <div class="field">
+            <label>Giorni della settimana</label>
+            <div class="checks-grid">
+              <label class="check-label"><input type="checkbox" name="weekday" value="1"> Lunedì</label>
+              <label class="check-label"><input type="checkbox" name="weekday" value="2"> Martedì</label>
+              <label class="check-label"><input type="checkbox" name="weekday" value="3"> Mercoledì</label>
+              <label class="check-label"><input type="checkbox" name="weekday" value="4"> Giovedì</label>
+              <label class="check-label"><input type="checkbox" name="weekday" value="5"> Venerdì</label>
+              <label class="check-label"><input type="checkbox" name="weekday" value="6"> Sabato</label>
+              <label class="check-label"><input type="checkbox" name="weekday" value="0"> Domenica</label>
+            </div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Seleziona piatti *</label>
+          <div id="dish-picker" class="dish-picker"></div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" id="btn-save-menu">Pubblica menu</button>
+          <button type="button" class="btn-secondary" id="btn-cancel-menu">Annulla</button>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- LISTA MENU -->
+    <section class="admin-card">
+      <h2>Menu creati</h2>
+      <div id="menu-list"></div>
+    </section>
+
+  </main>
+
+  <div id="toast" class="toast" style="display:none"></div>
+
+  <script type="module">
+    import { requireAuth, handleLogout } from './js/auth.js';
+    import { initMenu } from './js/menu.js';
+
+    requireAuth((user, restaurant) => {
+      initMenu(restaurant.id);
+    });
+
+    document.getElementById('btn-logout').addEventListener('click', handleLogout);
+  </script>
+</body>
+</html>

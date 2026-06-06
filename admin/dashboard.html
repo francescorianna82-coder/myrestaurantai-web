@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyRestaurantAI — Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-page">
+
+  <nav class="topbar">
+    <div class="topbar-logo">MyRestaurantAI</div>
+    <div class="topbar-actions">
+      <a href="dishes.html" class="btn-nav">Piatti</a>
+      <a href="menu.html" class="btn-nav">Menu</a>
+      <button id="btn-logout" class="btn-nav btn-logout">Esci</button>
+    </div>
+  </nav>
+
+  <main class="admin-main">
+    <div class="page-header">
+      <h1 id="restaurant-name">Caricamento...</h1>
+      <p id="restaurant-slug" class="slug-label"></p>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <span class="stat-number" id="stat-dishes">—</span>
+        <span class="stat-label">Piatti totali</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="stat-available">—</span>
+        <span class="stat-label">Disponibili</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-number" id="stat-menus">—</span>
+        <span class="stat-label">Menu attivi</span>
+      </div>
+    </div>
+
+    <div class="quick-actions">
+      <h2>Azioni rapide</h2>
+      <div class="quick-grid">
+        <a href="dishes.html" class="quick-card">
+          <span class="quick-icon">&#43;</span>
+          <span>Aggiungi piatto</span>
+        </a>
+        <a href="menu.html" class="quick-card">
+          <span class="quick-icon">&#9654;</span>
+          <span>Pubblica menu</span>
+        </a>
+        <a id="link-public" href="#" class="quick-card" target="_blank">
+          <span class="quick-icon">&#128279;</span>
+          <span>Vedi pagina pubblica</span>
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <div id="toast" class="toast" style="display:none"></div>
+
+  <script type="module">
+    import { requireAuth, handleLogout } from './js/auth.js';
+    import { getDishes, getMenus } from './js/firebase.js';
+
+    requireAuth(async (user, restaurant) => {
+      document.getElementById('restaurant-name').textContent = restaurant.name;
+      document.getElementById('restaurant-slug').textContent = 'peskamo.com/menus/?slug=' + restaurant.slug;
+
+      const publicUrl = `../menus/?slug=${restaurant.slug}`;
+      document.getElementById('link-public').href = publicUrl;
+
+      try {
+        const [dishes, menus] = await Promise.all([
+          getDishes(restaurant.id),
+          getMenus(restaurant.id),
+        ]);
+        document.getElementById('stat-dishes').textContent    = dishes.length;
+        document.getElementById('stat-available').textContent = dishes.filter(d => d.available).length;
+        document.getElementById('stat-menus').textContent     = menus.filter(m => m.status === 'published').length;
+      } catch (e) {
+        console.error(e);
+      }
+    });
+
+    document.getElementById('btn-logout').addEventListener('click', handleLogout);
+  </script>
+</body>
+</html>

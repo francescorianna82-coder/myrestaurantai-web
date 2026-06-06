@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MyRestaurantAI — Piatti</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="admin-page">
+
+  <nav class="topbar">
+    <div class="topbar-logo"><a href="dashboard.html">MyRestaurantAI</a></div>
+    <div class="topbar-actions">
+      <a href="dashboard.html" class="btn-nav">Dashboard</a>
+      <a href="menu.html" class="btn-nav">Menu</a>
+      <button id="btn-logout" class="btn-nav btn-logout">Esci</button>
+    </div>
+  </nav>
+
+  <main class="admin-main">
+
+    <div class="page-header">
+      <h1>Gestione piatti</h1>
+    </div>
+
+    <!-- FORM AGGIUNTA/MODIFICA -->
+    <section class="admin-card">
+      <h2 id="form-title">Aggiungi piatto</h2>
+      <form id="dish-form">
+
+        <div class="field-row">
+          <div class="field">
+            <label>Nome piatto *</label>
+            <input type="text" id="dish-name" placeholder="Es. Spaghetti alle vongole" required>
+          </div>
+          <div class="field field-sm">
+            <label>Prezzo (€) *</label>
+            <input type="number" id="dish-price" placeholder="0.00" step="0.50" min="0" required>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Descrizione</label>
+          <textarea id="dish-description" rows="2" placeholder="Ingredienti e preparazione..."></textarea>
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label>Categoria *</label>
+            <select id="dish-category"></select>
+          </div>
+          <div class="field field-sm field-check">
+            <label class="check-label">
+              <input type="checkbox" id="dish-available" checked>
+              Disponibile
+            </label>
+          </div>
+        </div>
+
+        <div class="field">
+          <label>Allergeni</label>
+          <div id="allergen-checks" class="checks-grid"></div>
+        </div>
+
+        <div class="field">
+          <label>Badge</label>
+          <div id="badge-checks" class="checks-grid"></div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" id="btn-save">Salva piatto</button>
+          <button type="button" class="btn-secondary" id="btn-cancel">Annulla</button>
+        </div>
+
+      </form>
+    </section>
+
+    <!-- LISTA PIATTI -->
+    <section class="admin-card">
+      <h2>Piatti inseriti</h2>
+      <div id="dish-list"></div>
+    </section>
+
+  </main>
+
+  <div id="toast" class="toast" style="display:none"></div>
+
+  <script type="module">
+    import { requireAuth, handleLogout } from './js/auth.js';
+    import { initDishes } from './js/dishes.js';
+
+    requireAuth((user, restaurant) => {
+      initDishes(restaurant.id);
+    });
+
+    document.getElementById('btn-logout').addEventListener('click', handleLogout);
+  </script>
+</body>
+</html>

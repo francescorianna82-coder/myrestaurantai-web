@@ -6,15 +6,14 @@ import { selectActiveMenu, groupDishesByCategory } from './menuEngine.js';
 import { getLang, t } from './i18n.js';
 import { mockRestaurant, mockMenus, mockDishes } from './mock.js';
 
-const USE_MOCK = true; // false quando Firestore ha dati reali
+const USE_MOCK = true;
 
-const _p = new URLSearchParams(window.location.search);
-const _fl = _p.get('lang');
-const lang = _fl === 'en' || _fl === 'it' ? _fl : getLang();
+const _params  = new URLSearchParams(window.location.search);
+const _fl      = _params.get('lang');
+const lang     = (_fl === 'en' || _fl === 'it') ? _fl : getLang();
+const slug     = _params.get('slug') || 'freddys';
 
-
-
-async function loadData(slug) {
+async function loadData() {
   if (USE_MOCK) {
     return { restaurant: mockRestaurant, menus: mockMenus, dishes: mockDishes };
   }
@@ -36,11 +35,13 @@ function applyBranding(restaurant) {
 }
 
 function renderHeader(restaurant) {
-  const el = document.getElementById('header');
+  const el    = document.getElementById('header');
   const hours = restaurant.openingHours?.[lang] || restaurant.openingHours?.it || '';
   el.innerHTML = `
     <div class="header-top">
-      ${restaurant.logo ? `<img src="${restaurant.logo}" class="logo" alt="${restaurant.name}">` : `<div class="logo-text">${restaurant.name}</div>`}
+      ${restaurant.logo
+        ? `<img src="${restaurant.logo}" class="logo" alt="${restaurant.name}">`
+        : `<div class="logo-text">${restaurant.name}</div>`}
       <div class="lang-switcher">
         <button onclick="switchLang('it')" class="${lang==='it'?'active':''}">IT</button>
         <button onclick="switchLang('en')" class="${lang==='en'?'active':''}">EN</button>
@@ -54,7 +55,7 @@ function renderHeader(restaurant) {
 }
 
 function renderActions(restaurant) {
-  const el = document.getElementById('actions');
+  const el   = document.getElementById('actions');
   const btns = [];
   if (restaurant.phone)
     btns.push(`<a href="tel:${restaurant.phone}" class="btn btn-primary"><span>&#9990;</span> ${t('call', lang)}</a>`);
@@ -66,13 +67,20 @@ function renderActions(restaurant) {
 }
 
 function renderSocial(restaurant) {
-  const el = document.getElementById('social');
+  const el    = document.getElementById('social');
   const links = [];
   if (restaurant.instagram)
     links.push(`<a href="${restaurant.instagram}" target="_blank" class="social-link">Instagram</a>`);
   if (restaurant.facebook)
     links.push(`<a href="${restaurant.facebook}" target="_blank" class="social-link">Facebook</a>`);
   el.innerHTML = links.join('');
+}
+
+function renderAddress(restaurant) {
+  const el = document.getElementById('address');
+  if (restaurant.address) {
+    el.innerHTML = `<p class="address-text">${restaurant.address}</p>`;
+  }
 }
 
 function renderMenu(menu, dishes) {
@@ -93,9 +101,9 @@ function renderMenu(menu, dishes) {
 }
 
 function renderDish(dish) {
-  const badgesHtml = (dish.badges || []).map(b => `<span class="badge badge-${b}">${t('badges.'+b, lang)}</span>`).join('');
+  const badgesHtml   = (dish.badges || []).map(b => `<span class="badge badge-${b}">${t('badges.'+b, lang)}</span>`).join('');
   const allergensHtml = (dish.allergens || []).map(a => `<span class="allergen" title="${t('allergens.'+a, lang)}">${allergenIcon(a)}</span>`).join('');
-  const unavailable = dish.available === false;
+  const unavailable  = dish.available === false;
   return `
     <div class="dish ${unavailable ? 'dish-unavailable' : ''}">
       ${dish.image ? `<img src="${dish.image}" class="dish-image" alt="${dish.name}">` : ''}
@@ -136,13 +144,6 @@ function renderFooter(restaurant) {
   }
 }
 
-function renderAddress(restaurant) {
-  const el = document.getElementById('address');
-  if (restaurant.address) {
-    el.innerHTML = `<p class="address-text">${restaurant.address}</p>`;
-  }
-}
-
 window.switchLang = function(l) {
   const url = new URL(window.location.href);
   url.searchParams.set('lang', l);
@@ -150,21 +151,9 @@ window.switchLang = function(l) {
 };
 
 async function init() {
-  const params = new URLSearchParams(window.location.search);
-  const slug   = params.get('slug') || 'freddys';
-  const lang   = _fl === 'en' || _fl === 'it' ? _fl : getLang();
-
-  const params = new URLSearchParams(window.location.search);
-  const slug   = params.get('slug') || 'freddys';
-  const forceLang = params.get('lang');
-  if (forceLang) {
-    Object.defineProperty(navigator, 'language', { value: forceLang, configurable: true });
-  }
-
   document.getElementById('loading').textContent = t('loading', lang);
-
   try {
-    const data = await loadData(slug);
+    const data = await loadData();
     if (!data) {
       document.getElementById('loading').textContent = t('notFound', lang);
       return;
@@ -172,13 +161,11 @@ async function init() {
     const { restaurant, menus, dishes } = data;
     document.getElementById('loading').style.display = 'none';
     document.getElementById('app').style.display     = 'block';
-
     applyBranding(restaurant);
     renderHeader(restaurant);
     renderActions(restaurant);
     renderSocial(restaurant);
     renderAddress(restaurant);
-
     const activeMenu = selectActiveMenu(menus);
     renderMenu(activeMenu, dishes);
     renderAllergenWarning();

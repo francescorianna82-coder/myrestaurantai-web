@@ -54,16 +54,17 @@ function renderHeader(r) {
     <div class="lang-switcher">
       <div class="lang-select-wrap">
         <button class="lang-current" onclick="toggleLangMenu()">
-          ${LANGUAGES.find(l => l.code === lang)?.flag || '🌐'}
-          <span>${LANGUAGES.find(l => l.code === lang)?.label || lang.toUpperCase()}</span>
+          <span class="lang-short">${LANGUAGES.find(l => l.code === lang)?.short || lang.toUpperCase()}</span>
+          <span class="lang-name">${LANGUAGES.find(l => l.code === lang)?.label || lang.toUpperCase()}</span>
           <span class="lang-arrow">&#9660;</span>
         </button>
         <div class="lang-dropdown" id="lang-dropdown">
           ${LANGUAGES.map(l => `
             <button onclick="switchLang('${l.code}')" class="${lang === l.code ? 'active' : ''}">
-              ${l.flag} ${l.label}
+              <span class="lang-short">${l.short}</span> ${l.label}
             </button>`).join('')}
         </div>
+
       </div>
     </div>
 

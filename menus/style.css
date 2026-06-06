@@ -110,7 +110,10 @@ body {
 }
 
 .lang-current:hover { background: rgba(255,255,255,0.12); }
-.lang-arrow         { font-size: 0.6rem; opacity: 0.5; }
+.lang-arrow { font-size: 0.6rem; opacity: 0.5; }
+.lang-short { font-weight: 700; color: var(--accent); font-size: 0.82rem; }
+.lang-name  { font-size: 0.82rem; opacity: 0.75; }
+
 
 .lang-dropdown {
   display:       none;

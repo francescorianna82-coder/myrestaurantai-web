@@ -2,16 +2,17 @@
 // MyRestaurantAI — traduzioni hardcoded 9 lingue
 
 export const LANGUAGES = [
-  { code: 'it', label: 'Italiano',  flag: '🇮🇹' },
-  { code: 'en', label: 'English',   flag: '🇬🇧' },
-  { code: 'fr', label: 'Français',  flag: '🇫🇷' },
-  { code: 'de', label: 'Deutsch',   flag: '🇩🇪' },
-  { code: 'es', label: 'Español',   flag: '🇪🇸' },
-  { code: 'ru', label: 'Русский',   flag: '🇷🇺' },
-  { code: 'zh', label: '中文',       flag: '🇨🇳' },
-  { code: 'ja', label: '日本語',     flag: '🇯🇵' },
-  { code: 'ko', label: '한국어',     flag: '🇰🇷' },
+  { code: 'it', label: 'Italiano',  short: 'IT' },
+  { code: 'en', label: 'English',   short: 'EN' },
+  { code: 'fr', label: 'Français',  short: 'FR' },
+  { code: 'de', label: 'Deutsch',   short: 'DE' },
+  { code: 'es', label: 'Español',   short: 'ES' },
+  { code: 'ru', label: 'Русский',   short: 'RU' },
+  { code: 'zh', label: '中文',       short: 'ZH' },
+  { code: 'ja', label: '日本語',     short: 'JA' },
+  { code: 'ko', label: '한국어',     short: 'KO' },
 ];
+
 ;
 
 const translations = {

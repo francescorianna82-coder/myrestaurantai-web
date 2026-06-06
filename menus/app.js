@@ -6,7 +6,7 @@ import { selectActiveMenu, groupDishesByCategory } from './menuEngine.js';
 import { getLang, t, LANGUAGES } from './i18n.js';
 import { mockRestaurant, mockMenus, mockDishes } from './mock.js';
 
-const USE_MOCK = true;
+const USE_MOCK = false;
 const lang     = getLang();
 const slug     = new URLSearchParams(window.location.search).get('slug') || 'freddys';
 

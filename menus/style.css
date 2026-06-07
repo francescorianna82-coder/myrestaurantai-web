@@ -1,13 +1,14 @@
 /* menus/style.css — MyRestaurantAI */
 
 :root {
-  --brand:  #1a2744;
-  --accent: #c9a96e;
-  --text:   #f5f0e8;
-  --card:   rgba(255,255,255,0.05);
-  --border: rgba(255,255,255,0.10);
-  --radius: 14px;
-  --shadow: 0 4px 24px rgba(0,0,0,0.18);
+  --brand:     #1a2744;
+  --accent:    #c9a96e;
+  --text:      #f5f0e8;
+  --text-sec:  rgba(245,240,232,0.60);
+  --card:      rgba(255,255,255,0.05);
+  --border:    rgba(255,255,255,0.10);
+  --radius:    14px;
+  --shadow:    0 4px 24px rgba(0,0,0,0.18);
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -49,7 +50,7 @@ body {
   margin-bottom:   16px;
 }
 
-.logo         { height: 56px; object-fit: contain; }
+.logo      { height: 56px; object-fit: contain; }
 
 .logo-text {
   font-size:      2rem;
@@ -59,39 +60,35 @@ body {
 }
 
 .tagline {
-  font-size:     1.05rem;
-  font-weight:   600;
-  color:         var(--accent);
-  margin-bottom: 8px;
+  font-size:      1.05rem;
+  font-weight:    600;
+  color:          var(--accent);
+  margin-bottom:  8px;
   letter-spacing: 0.02em;
 }
 
 .description {
   font-size:   0.9rem;
-  opacity:     0.75;
+  color:       var(--text-sec);
   max-width:   540px;
   margin:      0 auto 10px;
 }
 
 .cuisine {
   font-size:      0.78rem;
-  opacity:        0.45;
+  color:          var(--text-sec);
   text-transform: uppercase;
   letter-spacing: 0.1em;
   margin-bottom:  8px;
+  opacity:        0.7;
 }
 
-.hours        { font-size: 0.82rem; opacity: 0.65; margin-top: 6px; }
-.hours-label  { font-weight: 600; color: var(--accent); }
+.hours       { font-size: 0.82rem; color: var(--text-sec); margin-top: 6px; }
+.hours-label { font-weight: 600; color: var(--accent); }
 
 /* ── LANG SWITCHER ───────────────────────────────────────────────────── */
 
-.lang-switcher {
-  position: absolute;
-  right:    16px;
-  top:      16px;
-}
-
+.lang-switcher    { position: absolute; right: 16px; top: 16px; }
 .lang-select-wrap { position: relative; }
 
 .lang-current {
@@ -110,23 +107,22 @@ body {
 }
 
 .lang-current:hover { background: rgba(255,255,255,0.12); }
-.lang-arrow { font-size: 0.6rem; opacity: 0.5; }
-.lang-short { font-weight: 700; color: var(--accent); font-size: 0.82rem; }
-.lang-name  { font-size: 0.82rem; opacity: 0.75; }
-
+.lang-arrow         { font-size: 0.6rem; opacity: 0.5; }
+.lang-short         { font-weight: 700; color: var(--accent); font-size: 0.82rem; }
+.lang-name          { font-size: 0.82rem; color: var(--text-sec); }
 
 .lang-dropdown {
   display:       none;
   position:      absolute;
   right:         0;
   top:           calc(100% + 6px);
-  background:    #0d1f3c;
+  background:    var(--brand);
   border:        1px solid var(--border);
   border-radius: 12px;
   overflow:      hidden;
   z-index:       100;
   min-width:     160px;
-  box-shadow:    0 8px 32px rgba(0,0,0,0.4);
+  box-shadow:    var(--shadow);
 }
 
 .lang-dropdown.open { display: block; }
@@ -168,7 +164,7 @@ body {
 .btn {
   display:         inline-flex;
   align-items:     center;
-  gap:             6px;
+  gap:             7px;
   padding:         10px 20px;
   border-radius:   50px;
   font-size:       0.88rem;
@@ -178,6 +174,7 @@ body {
   border:          1px solid transparent;
 }
 
+.btn svg      { flex-shrink: 0; }
 .btn-primary  { background: var(--accent); color: var(--brand); }
 .btn-whatsapp { background: rgba(37,211,102,0.15); border-color: rgba(37,211,102,0.35); color: #25d366; }
 .btn-maps     { background: rgba(255,255,255,0.07); border-color: var(--border); color: var(--text); }
@@ -186,13 +183,19 @@ body {
 /* ── ADDRESS ─────────────────────────────────────────────────────────── */
 
 .address      { text-align: center; padding: 4px 0 8px; }
-.address-text { font-size: 0.82rem; opacity: 0.5; }
+.address-text {
+  font-size:   0.82rem;
+  color:       var(--text-sec);
+  display:     inline-flex;
+  align-items: center;
+  gap:         5px;
+}
 
 /* ── SOCIAL ──────────────────────────────────────────────────────────── */
 
 .social {
   display:         flex;
-  gap:             12px;
+  gap:             16px;
   justify-content: center;
   padding:         6px 0 16px;
 }
@@ -202,20 +205,22 @@ body {
   color:           var(--accent);
   text-decoration: none;
   opacity:         0.7;
-  border-bottom:   1px solid transparent;
+  display:         inline-flex;
+  align-items:     center;
+  gap:             5px;
   transition:      all 0.2s;
 }
 
-.social-link:hover { opacity: 1; border-color: var(--accent); }
+.social-link:hover { opacity: 1; }
 
 /* ── MENU ────────────────────────────────────────────────────────────── */
 
-.menu      { padding-top: 8px; }
+.menu    { padding-top: 8px; }
 
 .no-menu {
   text-align: center;
   padding:    48px 0;
-  opacity:    0.5;
+  color:      var(--text-sec);
   font-style: italic;
   font-size:  0.95rem;
 }
@@ -249,8 +254,8 @@ body {
   transition:    background 0.2s;
 }
 
-.dish:hover         { background: rgba(255,255,255,0.08); }
-.dish-unavailable   { opacity: 0.45; }
+.dish:hover       { background: rgba(255,255,255,0.08); }
+.dish-unavailable { opacity: 0.45; }
 
 .dish-image {
   width:         80px;
@@ -260,7 +265,7 @@ body {
   flex-shrink:   0;
 }
 
-.dish-body  { flex: 1; min-width: 0; }
+.dish-body { flex: 1; min-width: 0; }
 
 .dish-top {
   display:         flex;
@@ -270,7 +275,7 @@ body {
   margin-bottom:   4px;
 }
 
-.dish-name  { font-size: 0.95rem; font-weight: 700; line-height: 1.3; }
+.dish-name  { font-size: 0.95rem; font-weight: 700; line-height: 1.3; color: var(--text); }
 
 .dish-price {
   font-size:   0.92rem;
@@ -280,7 +285,7 @@ body {
   flex-shrink: 0;
 }
 
-.dish-desc  { font-size: 0.82rem; opacity: 0.65; margin: 4px 0 8px; line-height: 1.5; }
+.dish-desc { font-size: 0.82rem; color: var(--text-sec); margin: 4px 0 8px; line-height: 1.5; }
 
 .dish-meta {
   display:    flex;
@@ -290,10 +295,10 @@ body {
 }
 
 .allergens-row {
-  display:   flex;
-  flex-wrap: wrap;
-  gap:       4px;
-  width:     100%;
+  display:    flex;
+  flex-wrap:  wrap;
+  gap:        4px;
+  width:      100%;
   margin-top: 4px;
 }
 
@@ -311,7 +316,7 @@ body {
 .badge-new          { background: rgba(0,180,216,0.15);   color: #00B4D8; border: 1px solid rgba(0,180,216,0.30); }
 .badge-recommended  { background: rgba(201,169,110,0.15); color: var(--accent); border: 1px solid rgba(201,169,110,0.30); }
 .badge-lastPortions { background: rgba(255,71,87,0.15);   color: #FF4757; border: 1px solid rgba(255,71,87,0.30); }
-.badge-soldOut      { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.40); border: 1px solid rgba(255,255,255,0.15); }
+.badge-soldOut      { background: rgba(255,255,255,0.06); color: var(--text-sec); border: 1px solid var(--border); }
 .badge-dailySpecial { background: rgba(255,211,42,0.15);  color: #FFD32A; border: 1px solid rgba(255,211,42,0.30); }
 .badge-homemade     { background: rgba(0,200,150,0.12);   color: #00C896; border: 1px solid rgba(0,200,150,0.25); }
 .badge-vegetarian   { background: rgba(0,200,100,0.12);   color: #00C864; border: 1px solid rgba(0,200,100,0.25); }
@@ -336,13 +341,28 @@ body {
 
 .allergen-warning {
   font-size:   0.78rem;
-  opacity:     0.45;
+  color:       var(--text-sec);
   text-align:  center;
   font-style:  italic;
   padding:     16px 0 8px;
   border-top:  1px solid var(--border);
   margin-top:  16px;
 }
+
+/* ── ORARI ───────────────────────────────────────────────────────────── */
+
+.schedule-wrap       { margin-top: 12px; text-align: left; max-width: 360px; margin-left: auto; margin-right: auto; }
+.schedule-title      { font-size: 0.78rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.schedule-grid       { display: flex; flex-direction: column; gap: 4px; }
+.schedule-row        { display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; padding: 4px 0; border-bottom: 1px solid var(--border); }
+.schedule-day        { font-weight: 700; color: var(--text); min-width: 40px; }
+.schedule-hours      { color: var(--text-sec); }
+.schedule-closed     { color: rgba(255,71,87,0.7); font-style: italic; }
+.exceptions          { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
+.exceptions-title    { font-size: 0.72rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.exception-row       { display: flex; justify-content: space-between; font-size: 0.78rem; padding: 3px 0; }
+.exception-date      { font-weight: 700; color: var(--text); }
+.exception-label     { color: var(--text-sec); }
 
 /* ── FOOTER ──────────────────────────────────────────────────────────── */
 
@@ -355,32 +375,16 @@ body {
 
 .powered-by {
   font-size:      0.75rem;
-  opacity:        0.35;
+  color:          var(--text-sec);
   letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
-/* ── ORARI ───────────────────────────────────────────────────────────── */
-
-.schedule-wrap    { margin-top: 12px; text-align: left; max-width: 360px; margin-left: auto; margin-right: auto; }
-.schedule-title   { font-size: 0.78rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
-.schedule-grid    { display: flex; flex-direction: column; gap: 4px; }
-.schedule-row     { display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; padding: 4px 0; border-bottom: 1px solid var(--border); }
-.schedule-day     { font-weight: 700; color: var(--text); min-width: 40px; }
-.schedule-hours   { color: rgba(255,255,255,0.65); }
-.schedule-closed  { color: rgba(255,71,87,0.7); font-style: italic; }
-.exceptions       { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
-.exceptions-title { font-size: 0.72rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
-.exception-row    { display: flex; justify-content: space-between; font-size: 0.78rem; padding: 3px 0; }
-.exception-date   { font-weight: 700; color: var(--text); }
-.exception-label  { color: rgba(255,255,255,0.55); }
-
 /* ── RESPONSIVE ──────────────────────────────────────────────────────── */
 
-
 @media (max-width: 400px) {
-  .dish-image  { width: 64px; height: 64px; }
-  .dish-name   { font-size: 0.88rem; }
-  .btn         { padding: 9px 16px; font-size: 0.82rem; }
+  .dish-image   { width: 64px; height: 64px; }
+  .dish-name    { font-size: 0.88rem; }
+  .btn          { padding: 9px 16px; font-size: 0.82rem; }
   .lang-current { padding: 6px 10px; font-size: 0.78rem; }
 }

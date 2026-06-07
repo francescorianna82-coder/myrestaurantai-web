@@ -35,21 +35,66 @@ function applyBranding(r) {
   document.title = r.name + ' — Menu';
 }
 
+// ─── ORARI ──────────────────────────────────────────────────────────────────
+
+function formatSchedule(restaurant) {
+  const schedule   = restaurant.schedule;
+  const exceptions = restaurant.exceptions || [];
+
+  if (!schedule) {
+    const hours = restaurant.openingHours?.[lang] || restaurant.openingHours?.it || '';
+    return hours ? `<p class="hours"><span class="hours-label">${t('openingHours', lang)}:</span> ${hours}</p>` : '';
+  }
+
+  const DAYS = {
+    it: ['Dom', 'Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab'],
+    en: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  };
+  const dayNames = DAYS[lang] || DAYS.it;
+
+  const rows = [1, 2, 3, 4, 5, 6, 0].map(day => {
+    const d = schedule[day];
+    if (!d) return '';
+    const name = dayNames[day];
+    if (d.closed) return `<div class="schedule-row"><span class="schedule-day">${name}</span><span class="schedule-closed">${lang === 'en' ? 'Closed' : 'Chiuso'}</span></div>`;
+
+    const parts = [];
+    if (d.lunchOpen)  parts.push(`${d.lunchFrom}–${d.lunchTo}`);
+    if (d.dinnerOpen) parts.push(`${d.dinnerFrom}–${d.dinnerTo}`);
+    const hours = parts.length > 0 ? parts.join(' · ') : (lang === 'en' ? 'Closed' : 'Chiuso');
+
+    return `<div class="schedule-row"><span class="schedule-day">${name}</span><span class="schedule-hours">${hours}</span></div>`;
+  }).join('');
+
+  // Chiusure straordinarie
+  const today = new Date();
+  const todayStr = `${String(today.getDate()).padStart(2,'0')}/${String(today.getMonth()+1).padStart(2,'0')}/${today.getFullYear()}`;
+  const upcomingExceptions = exceptions.filter(ex => ex.date >= todayStr).slice(0, 3);
+  const exceptionsHtml = upcomingExceptions.length > 0 ? `
+    <div class="exceptions">
+      <p class="exceptions-title">${lang === 'en' ? 'Upcoming closures' : 'Chiusure straordinarie'}</p>
+      ${upcomingExceptions.map(ex => `<div class="exception-row"><span class="exception-date">${ex.date}</span><span class="exception-label">${ex.label}</span></div>`).join('')}
+    </div>` : '';
+
+  return `
+    <div class="schedule-wrap">
+      <p class="schedule-title">${t('openingHours', lang)}</p>
+      <div class="schedule-grid">${rows}</div>
+      ${exceptionsHtml}
+    </div>`;
+}
+
 // ─── HEADER ─────────────────────────────────────────────────────────────────
 
 function renderHeader(r) {
-  const el    = document.getElementById('header');
-  const hours = r.openingHours?.[lang] || r.openingHours?.en || r.openingHours?.it || '';
-  const name  = lang !== 'it' && r.name_en ? r.name_en : r.name;
-  const tag   = lang !== 'it' && r.tagline_en    ? r.tagline_en    : r.tagline;
-  const desc  = lang !== 'it' && r.description_en ? r.description_en : r.description;
-  const cuis  = lang !== 'it' && r.cuisineType_en ? r.cuisineType_en : r.cuisineType;
+  const el  = document.getElementById('header');
+  const tag = lang !== 'it' && r.translations?.tagline?.[lang]     ? r.translations.tagline[lang]     : r.tagline     || '';
+  const desc= lang !== 'it' && r.translations?.description?.[lang] ? r.translations.description[lang] : r.description || '';
+  const cuis= lang !== 'it' && r.translations?.cuisineType?.[lang] ? r.translations.cuisineType[lang] : r.cuisineType || '';
 
   el.innerHTML = `
     <div class="header-top">
-      ${r.logo
-        ? `<img src="${r.logo}" class="logo" alt="${r.name}">`
-        : `<div class="logo-text">${r.name}</div>`}
+      ${r.logo ? `<img src="${r.logo}" class="logo" alt="${r.name}">` : `<div class="logo-text">${r.name}</div>`}
     </div>
     <div class="lang-switcher">
       <div class="lang-select-wrap">
@@ -64,14 +109,12 @@ function renderHeader(r) {
               <span class="lang-short">${l.short}</span> ${l.label}
             </button>`).join('')}
         </div>
-
       </div>
     </div>
-
-    <p class="tagline">${tag}</p>
-    <p class="description">${desc}</p>
-    <p class="cuisine">${cuis}</p>
-    ${hours ? `<p class="hours"><span class="hours-label">${t('openingHours', lang)}:</span> ${hours}</p>` : ''}
+    ${tag  ? `<p class="tagline">${tag}</p>`  : ''}
+    ${desc ? `<p class="description">${desc}</p>` : ''}
+    ${cuis ? `<p class="cuisine">${cuis}</p>` : ''}
+    ${formatSchedule(r)}
   `;
 }
 
@@ -94,10 +137,9 @@ function renderActions(r) {
 function renderSocial(r) {
   const el    = document.getElementById('social');
   const links = [];
-  if (r.instagram)
-    links.push(`<a href="${r.instagram}" target="_blank" class="social-link">Instagram</a>`);
-  if (r.facebook)
-    links.push(`<a href="${r.facebook}" target="_blank" class="social-link">Facebook</a>`);
+  if (r.website)   links.push(`<a href="${r.website}"   target="_blank" class="social-link">Web</a>`);
+  if (r.instagram) links.push(`<a href="${r.instagram}" target="_blank" class="social-link">Instagram</a>`);
+  if (r.facebook)  links.push(`<a href="${r.facebook}"  target="_blank" class="social-link">Facebook</a>`);
   el.innerHTML = links.join('');
 }
 
@@ -118,15 +160,14 @@ function renderMenu(menu, dishes) {
   }
   const categories = groupDishesByCategory(menu, dishes);
   el.innerHTML = categories.map(cat => {
-    const catName = lang !== 'it' && cat[`name_${lang}`] ? cat[`name_${lang}`] : (lang !== 'it' && cat.name_en ? cat.name_en : cat.name);
+    const catName = lang !== 'it' && cat[`name_${lang}`] ? cat[`name_${lang}`] : (cat.name_en && lang !== 'it' ? cat.name_en : cat.name);
     return `
       <div class="category">
         <h2 class="category-title">${catName}</h2>
         <div class="dishes">
           ${cat.dishes.map(dish => renderDish(dish)).join('')}
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
 }
 
@@ -134,14 +175,11 @@ function renderMenu(menu, dishes) {
 
 function renderDish(dish) {
   const unavailable   = dish.available === false;
-  const name          = lang !== 'it' && dish[`name_${lang}`]        ? dish[`name_${lang}`]        : (lang !== 'it' && dish.name_en        ? dish.name_en        : dish.name);
-  const description   = lang !== 'it' && dish[`description_${lang}`] ? dish[`description_${lang}`] : (lang !== 'it' && dish.description_en ? dish.description_en : dish.description);
-  const badgesHtml    = (dish.badges || []).map(b =>
-    `<span class="badge badge-${b}">${t('badges.' + b, lang)}</span>`
-  ).join('');
-  const allergensHtml = (dish.allergens || []).map(a =>
-    `<span class="allergen" title="${t('allergens.' + a, lang)}">${t('allergens.' + a, lang)}</span>`
-  ).join('');
+  const translations  = dish.translations || {};
+  const name          = lang !== 'it' && translations.name?.[lang]        ? translations.name[lang]        : (dish.name_en && lang !== 'it' ? dish.name_en : dish.name);
+  const description   = lang !== 'it' && translations.description?.[lang] ? translations.description[lang] : (dish.description_en && lang !== 'it' ? dish.description_en : dish.description);
+  const badgesHtml    = (dish.badges || []).map(b => `<span class="badge badge-${b}">${t('badges.' + b, lang)}</span>`).join('');
+  const allergensHtml = (dish.allergens || []).map(a => `<span class="allergen" title="${t('allergens.' + a, lang)}">${t('allergens.' + a, lang)}</span>`).join('');
 
   return `
     <div class="dish ${unavailable ? 'dish-unavailable' : ''}">
@@ -158,8 +196,7 @@ function renderDish(dish) {
             ${allergensHtml ? `<div class="allergens-row">${allergensHtml}</div>` : ''}
           </div>` : ''}
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 // ─── ALLERGEN WARNING ────────────────────────────────────────────────────────
@@ -184,8 +221,7 @@ window.switchLang = function(l) {
 };
 
 window.toggleLangMenu = function() {
-  const dd = document.getElementById('lang-dropdown');
-  dd.classList.toggle('open');
+  document.getElementById('lang-dropdown')?.classList.toggle('open');
 };
 
 document.addEventListener('click', function(e) {
@@ -194,7 +230,6 @@ document.addEventListener('click', function(e) {
     document.getElementById('lang-dropdown')?.classList.remove('open');
   }
 });
-
 
 // ─── INIT ───────────────────────────────────────────────────────────────────
 

@@ -360,7 +360,23 @@ body {
   text-transform: uppercase;
 }
 
+/* ── ORARI ───────────────────────────────────────────────────────────── */
+
+.schedule-wrap    { margin-top: 12px; text-align: left; max-width: 360px; margin-left: auto; margin-right: auto; }
+.schedule-title   { font-size: 0.78rem; font-weight: 700; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.schedule-grid    { display: flex; flex-direction: column; gap: 4px; }
+.schedule-row     { display: flex; justify-content: space-between; align-items: center; font-size: 0.82rem; padding: 4px 0; border-bottom: 1px solid var(--border); }
+.schedule-day     { font-weight: 700; color: var(--text); min-width: 40px; }
+.schedule-hours   { color: rgba(255,255,255,0.65); }
+.schedule-closed  { color: rgba(255,71,87,0.7); font-style: italic; }
+.exceptions       { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--border); }
+.exceptions-title { font-size: 0.72rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+.exception-row    { display: flex; justify-content: space-between; font-size: 0.78rem; padding: 3px 0; }
+.exception-date   { font-weight: 700; color: var(--text); }
+.exception-label  { color: rgba(255,255,255,0.55); }
+
 /* ── RESPONSIVE ──────────────────────────────────────────────────────── */
+
 
 @media (max-width: 400px) {
   .dish-image  { width: 64px; height: 64px; }

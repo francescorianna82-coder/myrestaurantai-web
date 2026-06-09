@@ -27,14 +27,15 @@ export async function getRestaurantBySlug(slug) {
 }
 
 export async function getMenusByRestaurant(restaurantId) {
-  const q    = query(
+  const q = query(
     collection(db, 'menus'),
     where('restaurantId', '==', restaurantId),
-    where('status', '==', 'published')
+    where('status', '==', 'active'),
   );
   const snap = await getDocs(q);
   return snap.docs.map(d => ({ id: d.id, ...d.data() }));
 }
+
 
 export async function getDishesByRestaurant(restaurantId) {
   const q    = query(

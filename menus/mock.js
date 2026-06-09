@@ -75,7 +75,7 @@ export const mockMenus = [
     validTo:       todayStr,
     validWeekDays: null,
     timeSlot:      'allDay',
-    status:        'published',
+    status:        'active',
     priority:      10,
     categories: [
       { id: 'cat_01', name: 'Il Bancone',  name_en: 'The Counter',    items: ['d01','d02','d03'] },
